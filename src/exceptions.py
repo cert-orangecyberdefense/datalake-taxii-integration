@@ -1,0 +1,2 @@
+class NotInitializedTaxiiServer(Exception):
+    pass

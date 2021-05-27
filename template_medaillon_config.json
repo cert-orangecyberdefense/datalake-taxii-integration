@@ -1,0 +1,12 @@
+{
+  "backend": {
+    "module_class": "MongoBackend",
+    "uri": "mongodb://<login>:<password>@mongo:27017/"
+  },
+  "users": {
+    "<user>": "<password>"
+  },
+  "taxii": {
+    "max_page_size": 100
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "queries": [
+    {
+      "comment": "<title of the query hash (optional)>",
+      "query_hash": "<some query hash>",
+      "frequency": "45m",
+      "collection_id": "<some taxii collection>"
+    }
+  ]
+}

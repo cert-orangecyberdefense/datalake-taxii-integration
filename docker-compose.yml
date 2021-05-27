@@ -1,0 +1,39 @@
+version: '3'
+services:
+  taxii_integration:
+    image: taxii_integration
+    env_file: .env
+    depends_on:
+      - medallion
+      - redis
+
+  medallion:  # TODO NGINX
+    image: ocddev/cti-taxii-server
+    restart: always
+    command: [ sh, -c, "medallion --host 0.0.0.0 config.json" ]
+    volumes:
+      - ./medaillon_config.json:/opt/taxii/config.json
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+#    volumes:
+#      - /path/to/mongo_data:/data/db
+
+  redis:
+    image: redis:6
+    command: redis-server --appendonly yes
+    restart: always
+    ports:
+      - 6379:6379
+#    volumes:
+#      - /path/to/redis_data:/data

@@ -1,0 +1,11 @@
+.git
+.gitignore
+.idea
+
+# Persistent docker volumes
+data/
+
+# Potential secrets
+.env
+template.env
+medaillon_config.json
