@@ -50,6 +50,7 @@ def init_taxii(url):
 
     # Add indexes as by default in medallion
     add_default_indexes(api_root_db)
+    client.close()
 
 
 def add_default_indexes(api_root_db):

@@ -1,0 +1,10 @@
+{
+  "queries": [
+    {
+      "comment": "recent malicious ip",
+      "query_hash": "e6efa4d1a8d14d44b7188a9e7b26a57d",
+      "frequency": "30m",
+      "collection_id": "ip-collection"
+    }
+  ]
+}

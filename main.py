@@ -25,8 +25,7 @@ if len(sys.argv) == 2 and sys.argv[1] == '--init':
         logger.error('Env OCD_DTL_TAXII_MONGO_URL not defined, should be mongodb://<login>:<password>@<host>:27017/')
         exit(1)
     init_taxii(url=OCD_DTL_TAXII_MONGO_URL)
-    taxii = Taxii()
-    logger.debug(f'Taxii server initialized: {taxii.server.title} \n {taxii.server.url}')
+    logger.debug('Taxii server initialized, you must restart medallion to take the changes into account')
     exit(0)
 
 

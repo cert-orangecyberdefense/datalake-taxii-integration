@@ -36,7 +36,8 @@ class Taxii:
             _ = self.server.title
         except HTTPError as e:
             if e.response.status_code == 500:
-                raise NotInitializedTaxiiServer('Taxii server not initialized, use --init to automatically set it')
+                raise NotInitializedTaxiiServer(f'Taxii server (at {self.server.url}) not initialized, '
+                                                f'use --init to automatically set it')
             else:
                 raise
 
