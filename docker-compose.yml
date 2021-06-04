@@ -1,18 +1,43 @@
 version: '3'
 services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - ./deployment_sample/nginx:/etc/nginx
+    depends_on:
+      - medallion
+
+  nginx_proxy:
+    image: nginx
+    container_name: nginx_proxy
+    restart: unless-stopped
+    ports:
+      - 80:8080
+    volumes:
+      - ./deployment_sample/nginx_proxy:/etc/nginx
+    depends_on:
+      - nginx
+
   taxii_integration:
     image: taxii_integration
+    restart: unless-stopped
     env_file: .env
     depends_on:
       - medallion
       - redis
 
-  medallion:  # TODO NGINX
+  medallion:
     image: ocddev/cti-taxii-server
-    restart: always
-    command: [ sh, -c, "medallion --host 0.0.0.0 config.json" ]
+    container_name: medallion-deployment-sample
+    restart: unless-stopped
+    command: "uwsgi --ini /deployment_sample/uwsgi.ini"
     volumes:
       - ./medaillon_config.json:/opt/taxii/config.json
+      - ./deployment_sample/uwsgi.ini:/deployment_sample/uwsgi.ini
     ports:
       - 5000:5000
     depends_on:
@@ -20,7 +45,7 @@ services:
 
   mongo:
     image: mongo
-    restart: always
+    restart: unless-stopped
     ports:
       - 27017:27017
     environment:
@@ -32,7 +57,7 @@ services:
   redis:
     image: redis:6
     command: redis-server --appendonly yes
-    restart: always
+    restart: unless-stopped
     ports:
       - 6379:6379
 #    volumes:
