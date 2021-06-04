@@ -29,3 +29,9 @@ docker stop -t 120 <container_name>
 ## Enable persistence
 
 To keep data between reboot, uncomment and fill the mongo and redis `volumes` fields. 
+
+## Security
+
+If you are on an open network, you must secure connections to the taxii server with a certificate, from let's encrypt for example.
+
+As well, by default medallion use credentials in plain text, therefore [this file](medaillon_config.json) must be secured.
