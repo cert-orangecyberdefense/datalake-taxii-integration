@@ -21,7 +21,7 @@ services:
       - nginx
 
   taxii_integration:
-    build: .
+    image: ocddev/datalake-taxii-integration
     restart: unless-stopped
     volumes:
       - ./queries.json:/code/queries.json

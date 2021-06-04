@@ -43,13 +43,13 @@ class Cache(metaclass=Singleton):
                 )
                 info = con.info()
             except redis.exceptions.ConnectionError as e:
-                logger.debug(f'Redis connection failed')
+                logger.debug('Redis connection failed')
                 attempt += 1
                 sleep(timeout)
                 err = e
         if not con:
             raise err
-        logger.debug(f'Redis connection is up')
+        logger.debug('Redis connection is up')
         return con
 
     def has(self, hashkey):

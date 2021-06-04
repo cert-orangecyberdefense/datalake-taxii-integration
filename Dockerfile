@@ -1,21 +1,17 @@
-FROM python:3.9-slim-buster
+FROM python:alpine
 
-# System deps:
-RUN apt-get update \
-  && apt-get install -y \
-    gcc \
-    libfuzzy-dev \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN useradd -ms /bin/bash pythonuser
-USER pythonuser
+RUN apk add --no-cache g++ gcc libxslt-dev
 
 WORKDIR /code
 
 ADD ./requirements.txt /code/requirements.txt
 
-RUN pip install --no-warn-script-location -r requirements.txt
+RUN pip install -r requirements.txt
 
 ADD . /code
+
+RUN chown -R 1001:1001 /code
+
+USER 1001
 
 ENTRYPOINT ["python", "main.py"]
