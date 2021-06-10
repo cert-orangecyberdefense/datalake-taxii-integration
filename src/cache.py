@@ -26,32 +26,6 @@ class Cache(metaclass=Singleton):
         keys = info.get(self.DEFAULT_DB, {}).get('keys', -1)
         logger.debug(f'Hashkeys in cache: {keys}')
 
-    @staticmethod
-    def retrieve_redis_connection():
-        attempt = 0
-        max_attempt = 3
-        timeout = 2
-        con = None
-        info = None
-        err = None
-        while not info and attempt < max_attempt:
-            try:
-                con = redis.Redis(
-                    host=OCD_DTL_REDIS_HOST,
-                    port=OCD_DTL_REDIS_PORT,
-                    password=OCD_DTL_REDIS_PASSWORD,
-                )
-                info = con.info()
-            except redis.exceptions.ConnectionError as e:
-                logger.debug('Redis connection failed')
-                attempt += 1
-                sleep(timeout)
-                err = e
-        if not con:
-            raise err
-        logger.debug('Redis connection is up')
-        return con
-
     def has(self, hashkey):
         return bool(self.con.get(hashkey))
 

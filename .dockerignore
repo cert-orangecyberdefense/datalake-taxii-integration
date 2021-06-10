@@ -4,9 +4,7 @@
 
 # Persistent docker volumes
 data/
-fake_flask/
-deployement_sample/
-cti-*/
+deployment_sample/
 
 # Potential secrets
 .env
