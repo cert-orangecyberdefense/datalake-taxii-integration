@@ -12,7 +12,7 @@ A reference taxii server, [medaillon](https://github.com/oasis-open/cti-taxii-se
 * Copy the template_queries.json to queries.json and fill the value
 * if needed, initialise the taxii db with:
 ```shell
-docker-compose run --entrypoint "python main.py --init" taxii_integration
+docker-compose run --entrypoint "python main.py --init" taxii_integration && docker-compose restart medallion 
 ```
 * Then start ingesting threats with:
 ```shell

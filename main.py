@@ -19,7 +19,6 @@ from src.taxii import Taxii
 configure_logging(logging.DEBUG)
 
 if len(sys.argv) == 2 and sys.argv[1] == '--init':
-    INITIATING_MODE = True
     logger.warning('Initializing the taxii server and exiting')
     if not OCD_DTL_TAXII_MONGO_URL:
         logger.error('Env OCD_DTL_TAXII_MONGO_URL not defined, should be mongodb://<login>:<password>@<host>:27017/')
