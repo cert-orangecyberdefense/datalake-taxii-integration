@@ -10,6 +10,7 @@ A reference taxii server, [medaillon](https://github.com/oasis-open/cti-taxii-se
 * Copy the template_medaillon_config.json to medaillon_config.json and fill the value.
   * values must be synced with the content of docker-compose.yml and .env
 * Copy the template_queries.json to queries.json and fill the value
+* Copy the [deployment_sample directory](deployment_sample) locally to configure nginx.  
 * if needed, initialise the taxii db with:
 ```shell
 docker-compose run --entrypoint "python main.py --init" taxii_integration && docker-compose restart medallion 
