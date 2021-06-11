@@ -1,5 +1,3 @@
-from time import sleep
-
 import redis as redis
 
 from src.config import OCD_DTL_REDIS_HOST, OCD_DTL_REDIS_PORT, OCD_DTL_REDIS_PASSWORD
