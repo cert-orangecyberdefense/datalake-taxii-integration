@@ -8,10 +8,11 @@ A reference taxii server, [medaillon](https://github.com/oasis-open/cti-taxii-se
 * Copy the [example docker-compose file](docker-compose.yml.example) and rename it to `docker-compose.yml` if you don't want to clone this repo, else just use the local `docker-compose.yml` 
 * Copy the template.env to .env and fill the value
 * Copy the template_medaillon_config.json to medaillon_config.json and fill the value.
-  * values must be synced with the content of docker-compose.yml and .env
+  * Values must be synced with the content of docker-compose.yml and .env.  
+    In particular username/password of mongo, as well as `TAXII_USER` and `TAXII_PASSWORD`
 * Copy the template_queries.json to queries.json and fill the value
 * Copy the [deployment_sample directory](deployment_sample) locally to configure nginx.  
-* if needed, initialise the taxii db with:
+* If needed, initialise the taxii db with:
 ```shell
 docker-compose run --entrypoint "python main.py --init" taxii_integration && docker-compose restart medallion 
 ```
