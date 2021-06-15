@@ -34,6 +34,8 @@ To keep data between reboot, uncomment and fill the mongo and redis `volumes` fi
 
 ## Security
 
-If you are on an open network, you must secure connections to the taxii server with a certificate, from let's encrypt for example.
+If you are on an open network, you must secure connections to the taxii server with a certificate, from let's encrypt for example.  
+By default, nginx use an auto-signed certificate. Replace it in the [following directory](deployment_sample/certs), as well as change [the nginx config](deployment_sample/nginx_proxy/conf.d/proxy.conf) to not listen to 8080.  
+Remember to adapt your .env after that.
 
-As well, by default medallion use credentials in plain text, therefore [this file](medaillon_config.json) must be secured.
+As well, by default medallion use credentials in plain text, therefore medaillon_config.json must be secured.
