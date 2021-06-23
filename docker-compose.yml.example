@@ -14,11 +14,17 @@ services:
     container_name: nginx_proxy
     restart: unless-stopped
     ports:
-      - 8081:8080
+      - 8080:8080
+      - 443:443
     volumes:
       - ./deployment_sample/nginx_proxy:/etc/nginx
+      - ./deployment_sample/certs:/etc/certs  # Auto signed certs by default
     depends_on:
       - nginx
+    networks:
+      default:
+        aliases:
+          - my.taxii_server.com
 
   taxii_integration:
     image: ocddev/datalake-taxii-integration

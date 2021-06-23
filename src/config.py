@@ -15,7 +15,7 @@ assert 0 < OCD_DTL_NB_THREAT_PER_BATCH <= 5000, incorrect_config_message
 OCD_DTL_QUERY_CONFIG_PATH = os.getenv('OCD_DTL_QUERY_CONFIG_PATH', 'queries.json')
 
 OCD_DTL_TAXII_MONGO_URL = os.getenv('OCD_DTL_TAXII_MONGO_URL')
-OCD_DTL_TAXII_HOST = os.getenv('OCD_DTL_TAXII_HOST', 'http://nginx_proxy:8081')
+OCD_DTL_TAXII_HOST = os.getenv('OCD_DTL_TAXII_HOST')
 OCD_DTL_TAXII_PASSWORD = os.getenv('OCD_DTL_TAXII_PASSWORD')
 OCD_DTL_TAXII_USER = os.getenv('OCD_DTL_TAXII_USER')
 OCD_DTL_TAXII_GROUP = os.getenv('OCD_DTL_TAXII_GROUP', 'default-taxii-group')
