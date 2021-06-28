@@ -19,6 +19,7 @@ OCD_DTL_TAXII_HOST = os.getenv('OCD_DTL_TAXII_HOST')
 OCD_DTL_TAXII_PASSWORD = os.getenv('OCD_DTL_TAXII_PASSWORD')
 OCD_DTL_TAXII_USER = os.getenv('OCD_DTL_TAXII_USER')
 OCD_DTL_TAXII_GROUP = os.getenv('OCD_DTL_TAXII_GROUP', 'default-taxii-group')
+OCD_DTL_TAXII_VERIFY_SSL = os.getenv('OCD_DTL_TAXII_VERIFY_SSL', "true").lower() == "true"
 
 OCD_DTL_REDIS_HOST = os.getenv('OCD_DTL_REDIS_HOST', 'redis')
 OCD_DTL_REDIS_PORT = os.getenv('OCD_DTL_REDIS_PORT', 6379)

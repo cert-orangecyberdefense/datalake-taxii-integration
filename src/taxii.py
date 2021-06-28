@@ -5,7 +5,8 @@ from requests import HTTPError
 from taxii2client import Collection, Server
 
 from src.cache import Cache
-from src.config import OCD_DTL_TAXII_HOST, OCD_DTL_TAXII_GROUP, OCD_DTL_TAXII_USER, OCD_DTL_TAXII_PASSWORD
+from src.config import OCD_DTL_TAXII_HOST, OCD_DTL_TAXII_GROUP, OCD_DTL_TAXII_USER, OCD_DTL_TAXII_PASSWORD, \
+    OCD_DTL_TAXII_VERIFY_SSL
 from src.exceptions import NotInitializedTaxiiServer
 from src.logger import logger
 from src.types import DtlStixEvent
@@ -19,6 +20,7 @@ class Taxii:
             f'{OCD_DTL_TAXII_HOST}/taxii2/',
             user=OCD_DTL_TAXII_USER,
             password=OCD_DTL_TAXII_PASSWORD,
+            verify=OCD_DTL_TAXII_VERIFY_SSL
         )
         self.check_mongo_initialized()
         self.api_root = self.find_api_root(OCD_DTL_TAXII_GROUP)
