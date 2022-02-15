@@ -4,7 +4,7 @@
     "uri": "mongodb://<login>:<password>@mongo:27017/"
   },
   "users": {
-    "<user>": "<password>"
+    "<taxxi-user>": "<taxii-password>"
   },
   "taxii": {
     "max_page_size": 100
