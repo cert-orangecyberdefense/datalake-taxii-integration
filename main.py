@@ -58,9 +58,7 @@ def push_data_from_query_hash(query_hash, *, collection: str) -> int:
 
     :return the number of bundles successfully inserted.
     """
-    
-    events = json.loads(open('bundle_1000.json', 'r').read())
-    # events = datalake.retrieve_events_from_query_hash(query_hash)
+    events = datalake.retrieve_events_from_query_hash(query_hash)
     bundles_inserted = taxii.add_stix_bundles(events, collection)
     return bundles_inserted
 
