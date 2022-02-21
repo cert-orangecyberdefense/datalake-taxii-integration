@@ -52,6 +52,6 @@ services:
     container_name: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
      - ./data/mongo_data:/data/db

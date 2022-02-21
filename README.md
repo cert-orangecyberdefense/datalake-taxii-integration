@@ -1,6 +1,6 @@
 # Datalake taxii integration
 
-### This repo is used to continuously retrieve threats from the Datalake platform and insert them into a taxii server
+### This repository is used to continuously retrieve threats from the Datalake platform and insert them into a taxii server
 
 A reference taxii server, [medaillon](https://github.com/oasis-open/cti-taxii-server/) is used by default
 
