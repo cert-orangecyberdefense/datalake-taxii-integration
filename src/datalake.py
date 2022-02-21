@@ -6,8 +6,7 @@ from datalake import Datalake as dtl
 from datalake.common.ouput import Output
 
 
-from src.config import OCD_DTL_API_ENV, OCD_DTL_NB_THREAT_PER_BATCH, OCD_DTL_API_LOG_LVL
-from src.logger import logger
+from src.config import OCD_DTL_API_ENV, OCD_DTL_API_LOG_LVL
 from src.types import DtlStixEvent
 
 
@@ -34,4 +33,3 @@ class Datalake:
         stix_events = task.download_sync(output=Output.STIX)
         loop.close()
         return stix_events
-

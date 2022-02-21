@@ -1,5 +1,5 @@
 import timeit
-from typing import Iterable, List
+from typing import Iterable
 
 from requests import HTTPError
 from taxii2client import Collection, Server
