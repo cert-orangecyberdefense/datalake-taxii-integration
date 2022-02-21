@@ -82,7 +82,6 @@ def register_jobs(jobs_config_path):
         if not taxii.check_collection_exist(collection_id):
             raise ValueError(f"Collection {collection_id} doesn't exist\n"
                              f"  hint: use --init")
-        ## 
         frequency_number = int(frequency[:-1])
         if frequency[-1] == 's':
             schedule.every(frequency_number).seconds.do(run_threaded, job, query_hash, collection_id)
