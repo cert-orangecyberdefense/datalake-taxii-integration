@@ -64,19 +64,20 @@ class Taxii:
         self.delete_prev_objects(OCD_DTL_TAXII_MONGO_URL, collection_id)
         bundle_inserted_successfully = 0
         bundle_inserted_failed = 0
-        stix_chunks = self.chunks(stix_bundle['objects'], 1000)
-        for stixs in stix_chunks:
-            fake_bundle = {
-                "type": "bundle",
-                "objects": stixs
-            }
-            results = self._add_bundle(fake_bundle, collection)
-            bundle_inserted_failed += results.failure_count
-            bundle_inserted_successfully += results.success_count
-
+        if 'objects' in stix_bundle:
+            stix_chunks = self.chunks(stix_bundle['objects'], 1000)
+            for stixs in stix_chunks:
+                fake_bundle = {
+                    "type": "bundle",
+                    "objects": stixs
+                }
+                results = self._add_bundle(fake_bundle, collection)
+                bundle_inserted_failed += results.failure_count
+                bundle_inserted_successfully += results.success_count
+        objects_nb = len(stix_bundle['objects']) if 'objects' in stix_bundle else 0
         logger.debug(
             'TAXII: Done with the insertion of %s objects (%s failed), after %1.2fs',
-            len(stix_bundle['objects']),
+            objects_nb,
             bundle_inserted_failed,
             timeit.default_timer() - start_time,
         )

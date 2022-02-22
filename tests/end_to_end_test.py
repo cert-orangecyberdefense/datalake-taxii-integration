@@ -119,4 +119,4 @@ class TestEndToEnd:
         push_data_from_query_hash('some_query_hash', collection=self.test_collection)
 
         assert mocked_datalake.retrieve_events_from_query_hash.called
-        assert check_object_in_collection(self.test_collection) == 6  # each bundle is 3 objects
+        assert check_object_in_collection(self.test_collection) == 4  # 4 objects in bundle
