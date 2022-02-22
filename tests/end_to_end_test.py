@@ -8,7 +8,7 @@ from src.taxii import Taxii
 End to end test requiring docker services to be up
 """
 
-TAXII_HOST = 'nginx-proxy'
+TAXII_HOST = 'nginx_proxy'
 TAXII_PORT = '8080'
 TAXII_USER = 'admin'
 TAXII_PASSWORD = 'Password!'
