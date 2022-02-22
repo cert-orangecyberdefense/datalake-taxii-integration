@@ -1,6 +1,5 @@
 import asyncio
 from dataclasses import dataclass
-from typing import List
 
 from datalake import Datalake as dtl
 from datalake.common.ouput import Output
