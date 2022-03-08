@@ -56,6 +56,11 @@ class Taxii:
 
     def add_stix_bundles(self, stix_bundle: DtlStixEvent, collection_id: str):
         """Add bundles in batch by calling add_bundle"""
+
+        def chunks(lst, n):
+            for i in range(0, len(lst), n):
+                yield lst[i:i + n]
+
         start_time = timeit.default_timer()
         if self.is_shutting_down:
             logger.warning('Add objects called while taxii is already shutdown')
@@ -65,7 +70,7 @@ class Taxii:
         bundle_inserted_successfully = 0
         bundle_inserted_failed = 0
         if 'objects' in stix_bundle:
-            stix_chunks = self.chunks(stix_bundle['objects'], 1000)
+            stix_chunks = chunks(stix_bundle['objects'], 1000)
             for stixs in stix_chunks:
                 fake_bundle = {
                     "type": "bundle",
@@ -95,8 +100,3 @@ class Taxii:
         collection = client[OCD_DTL_TAXII_GROUP]['objects']
         logger.info(f'removing previous objects for collection {collection_id}')
         collection.delete_many({"_collection_id": collection_id})
-
-    @staticmethod
-    def chunks(lst, n):
-        for i in range(0, len(lst), n):
-            yield lst[i:i + n]

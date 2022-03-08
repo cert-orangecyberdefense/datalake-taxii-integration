@@ -27,8 +27,5 @@ class Datalake:
             query_hash=query_hash,
             for_stix_export=True
         )
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        stix_events = task.download_sync(output=Output.STIX)
-        loop.close()
+        stix_events = asyncio.run(task.download_async(output=Output.STIX))
         return stix_events
