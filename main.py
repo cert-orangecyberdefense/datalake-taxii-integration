@@ -8,7 +8,6 @@ from time import sleep
 
 import schedule
 
-from src.cache import Cache
 from src.config import OCD_DTL_QUERY_CONFIG_PATH, OCD_DTL_TAXII_MONGO_URL
 from src.datalake import Datalake
 from src.init_taxii_mongo import init_taxii
@@ -83,7 +82,6 @@ def register_jobs(jobs_config_path):
         if not taxii.check_collection_exist(collection_id):
             raise ValueError(f"Collection {collection_id} doesn't exist\n"
                              f"  hint: use --init")
-
         frequency_number = int(frequency[:-1])
         if frequency[-1] == 's':
             schedule.every(frequency_number).seconds.do(run_threaded, job, query_hash, collection_id)
@@ -102,7 +100,6 @@ def register_jobs(jobs_config_path):
 
 
 if __name__ == '__main__':
-    cache = Cache()
     signal_manager = SignalManager()
     register_jobs(OCD_DTL_QUERY_CONFIG_PATH)
     while not signal_manager.is_stop_requested:
@@ -110,4 +107,3 @@ if __name__ == '__main__':
         sleep(1)
 
     taxii.close()
-    cache.close()

@@ -34,7 +34,6 @@ services:
     env_file: .env
     depends_on:
       - nginx_proxy
-      - redis
 
   medallion:
     image: ocddev/cti-taxii-server
@@ -55,11 +54,4 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
 #    volumes:
-#      - /path/to/mongo_data:/data/db
-
-  redis:
-    image: redis:6
-    command: redis-server --appendonly yes
-    restart: unless-stopped
-#    volumes:
-#      - /path/to/redis_data:/data
+#     - ./data/mongo_data:/data/db
