@@ -8,6 +8,8 @@ services:
       - ./deployment_sample/nginx:/etc/nginx
     depends_on:
       - medallion
+    networks:
+      - datalake_taxii_integration
 
   nginx_proxy:
     image: nginx
@@ -18,22 +20,26 @@ services:
       - 443:443
     volumes:
       - ./deployment_sample/nginx_proxy:/etc/nginx
-      - ./deployment_sample/certs:/etc/certs  # Auto signed certs by default
+      - ./deployment_sample/certs:/etc/certs # Auto signed certs by default
     depends_on:
       - nginx
     networks:
-      default:
+      datalake_taxii_integration:
         aliases:
           - my.taxii_server.com
 
   taxii_integration:
     build: .
     restart: unless-stopped
+    container_name: taxii_integration
     volumes:
       - ./queries.json:/code/queries.json
+      - data_volume:/code/output
     env_file: .env
     depends_on:
       - nginx_proxy
+    networks:
+      - datalake_taxii_integration
 
   medallion:
     image: ocddev/cti-taxii-server
@@ -45,6 +51,8 @@ services:
       - ./deployment_sample/uwsgi.ini:/deployment_sample/uwsgi.ini
     depends_on:
       - mongo
+    networks:
+      - datalake_taxii_integration
 
   mongo:
     image: mongo
@@ -52,6 +60,19 @@ services:
     container_name: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-#    volumes:
-#     - ./data/mongo_data:/data/db
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./data/mongo_data:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - datalake_taxii_integration
+
+volumes:
+  data_volume:
+
+
+networks:
+  datalake_taxii_integration:
+    name: datalake_taxii_integration
+    driver: bridge

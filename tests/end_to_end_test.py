@@ -63,7 +63,7 @@ class TestEndToEnd:
     def test_add_2_bundles(self, _unused_import, mocked_datalake):
         from main import push_data_from_query_hash
         # <editor-fold defaultstate="collapsed" desc="Bundle definition">
-        stix_bundle_1 = {
+        stix_bundle_1 = [{
                 "type": "bundle",
                 "id": "bundle--00086382-23e1-428e-8680-03f24e588a06",
                 "objects": [
@@ -112,7 +112,7 @@ class TestEndToEnd:
                         "valid_from": "2022-02-14T16:39:51.163812Z"
                     },
                 ],
-            }
+            }]
         # </editor-fold>
         mocked_datalake.retrieve_events_from_query_hash.return_value = stix_bundle_1
 
