@@ -1,5 +1,5 @@
 import timeit
-from typing import Iterable
+from typing import Iterable, List
 
 from requests import HTTPError
 from taxii2client import Collection, Server
@@ -54,7 +54,18 @@ class Taxii:
     def _add_bundle(bundle: Iterable, collection: Collection):
         return collection.add_objects(bundle)
 
-    def add_stix_bundles(self, stix_bundle: DtlStixEvent, collection_id: str):
+    def add_stix_bundles_list(self, stix_bundles_list: List[DtlStixEvent], collection_id: str):
+        inserted = 0
+        self.delete_prev_objects(OCD_DTL_TAXII_MONGO_URL, collection_id)
+        logger.info(f'adding bundles to collection {collection_id}.')
+        for stix_bundle in stix_bundles_list:
+            if self.is_shutting_down:
+                logger.warning('Add objects called while taxii is already shutdown, not adding objects and exiting.')
+                return inserted
+            inserted += self.add_stix_bundles(stix_bundle, collection_id)
+        return inserted
+
+    def add_stix_bundles(self, stix_bundle: DtlStixEvent, collection_id: str) -> int:
         """Add bundles in batch by calling add_bundle"""
 
         def chunks(lst, n):
@@ -62,15 +73,11 @@ class Taxii:
                 yield lst[i:i + n]
 
         start_time = timeit.default_timer()
-        if self.is_shutting_down:
-            logger.warning('Add objects called while taxii is already shutdown')
-            return  # close() has already been called
         collection = self.collection[collection_id]
-        self.delete_prev_objects(OCD_DTL_TAXII_MONGO_URL, collection_id)
         bundle_inserted_successfully = 0
         bundle_inserted_failed = 0
         if 'objects' in stix_bundle:
-            stix_chunks = chunks(stix_bundle['objects'], 1000)
+            stix_chunks = chunks(stix_bundle['objects'], 500)
             for stixs in stix_chunks:
                 fake_bundle = {
                     "type": "bundle",
@@ -94,8 +101,10 @@ class Taxii:
         self.is_shutting_down = True
         self.server.close()
 
-    @staticmethod
-    def delete_prev_objects(url, collection_id):
+    def delete_prev_objects(self, url, collection_id):
+        if self.is_shutting_down:
+            logger.warning('Taxii is already shutdown, not deleting previous objects')
+            return
         client = MongoClient(url)
         collection = client[OCD_DTL_TAXII_GROUP]['objects']
         logger.info(f'removing previous objects for collection {collection_id}')

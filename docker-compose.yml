@@ -18,7 +18,7 @@ services:
       - 443:443
     volumes:
       - ./deployment_sample/nginx_proxy:/etc/nginx
-      - ./deployment_sample/certs:/etc/certs  # Auto signed certs by default
+      - ./deployment_sample/certs:/etc/certs # Auto signed certs by default
     depends_on:
       - nginx
     networks:
@@ -29,8 +29,10 @@ services:
   taxii_integration:
     build: .
     restart: unless-stopped
+    container_name: taxii_integration
     volumes:
       - ./queries.json:/code/queries.json
+      - data_volume:/code/output
     env_file: .env
     depends_on:
       - nginx_proxy
@@ -41,7 +43,7 @@ services:
     restart: unless-stopped
     command: "uwsgi --ini /deployment_sample/uwsgi.ini"
     volumes:
-      - ./medaillon_config.json:/opt/taxii/config.json
+      - ./medallion_config.json:/opt/taxii/config.json
       - ./deployment_sample/uwsgi.ini:/deployment_sample/uwsgi.ini
     depends_on:
       - mongo
@@ -52,6 +54,16 @@ services:
     container_name: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-#    volumes:
-#     - ./data/mongo_data:/data/db
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./data/mongo_data:/data/db
+    ports:
+      - 27017:27017
+
+volumes:
+  data_volume:
+
+
+networks:
+  default:
+    driver: bridge

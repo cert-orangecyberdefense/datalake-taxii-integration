@@ -1,6 +1,8 @@
 .git
 .gitignore
 .idea
+venv
+.venv
 
 # Persistent docker volumes
 data/
@@ -9,4 +11,4 @@ deployment_sample/
 # Potential secrets
 .env
 template.env
-medaillon_config.json
+medallion_config.json

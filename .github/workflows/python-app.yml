@@ -5,23 +5,23 @@ name: Python application
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
       - name: Prepare workspace
-        run: cp ./tests/ci_files/.env.test .env && cp ./tests/ci_files/queries.test.json queries.json && cp ./tests/ci_files/medaillon_config.test.json medaillon_config.json
+        run: cp ./tests/ci_files/.env.test .env && cp ./tests/ci_files/queries.test.json queries.json && cp ./tests/ci_files/medallion_config.test.json medallion_config.json
       - name: Build the docker image
-        run: docker-compose build taxii_integration
+        run: docker compose build taxii_integration
       - name: Run linter and test suite
-        run: docker-compose up -d -V nginx_proxy && docker-compose run --entrypoint "python main.py --init" taxii_integration && docker-compose restart medallion && docker-compose run --entrypoint=sh taxii_integration -c "
+        run:
+          docker compose up -d -V nginx_proxy && docker compose run --entrypoint "python main.py --init" taxii_integration && docker compose restart medallion && docker compose run --entrypoint=sh taxii_integration -c "
           python -m flake8 . --count --max-complexity=10 --max-line-length=120 --show-source --statistics
           && python -m pytest -s
           "

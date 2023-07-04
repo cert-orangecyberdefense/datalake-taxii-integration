@@ -1,4 +1,4 @@
-datalake-scripts==2.5.2
+datalake-scripts==2.6.8
 schedule==1.1.0
 taxii2-client==2.3.0
 redis==3.5.3
