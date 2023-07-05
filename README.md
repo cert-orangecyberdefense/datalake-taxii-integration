@@ -28,6 +28,8 @@ OCD_DTL_TAXII_PASSWORD=mysupertaxiipassword1
 OCD_DTL_TAXII_VERIFY_SSL=False
 ```
 
+Make sure to replace the values.
+
 3. Create a file named `medallion_config.json` and copy the content of `template_medallion_config.json` into it, then fill the value like the following:
 
  ```json
