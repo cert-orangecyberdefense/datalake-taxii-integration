@@ -8,6 +8,8 @@ services:
       - ./deployment_sample/nginx:/etc/nginx
     depends_on:
       - medallion
+    networks:
+      - datalake-taxii
 
   nginx_proxy:
     image: nginx
@@ -22,7 +24,7 @@ services:
     depends_on:
       - nginx
     networks:
-      default:
+      datalake-taxii:
         aliases:
           - my.taxii_server.com
 
@@ -36,6 +38,8 @@ services:
     env_file: .env
     depends_on:
       - nginx_proxy
+    networks:
+      - datalake-taxii
 
   medallion:
     image: ocddev/cti-taxii-server
@@ -47,6 +51,8 @@ services:
       - ./deployment_sample/uwsgi.ini:/deployment_sample/uwsgi.ini
     depends_on:
       - mongo
+    networks:
+      - datalake-taxii
 
   mongo:
     image: mongo
@@ -59,11 +65,14 @@ services:
       - ./data/mongo_data:/data/db
     ports:
       - 27017:27017
+    networks:
+      - datalake-taxii
 
 volumes:
   data_volume:
 
 
 networks:
-  default:
-    driver: bridge
+  datalake-taxii:
+    external: true
+    name: datalake-taxii
