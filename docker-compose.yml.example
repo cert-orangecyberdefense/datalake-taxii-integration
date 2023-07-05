@@ -46,7 +46,7 @@ services:
     restart: unless-stopped
     command: "uwsgi --ini /deployment_sample/uwsgi.ini"
     volumes:
-      - ./medaillon_config.json:/opt/taxii/config.json
+      - ./medallion_config.json:/opt/taxii/config.json
       - ./deployment_sample/uwsgi.ini:/deployment_sample/uwsgi.ini
     depends_on:
       - mongo

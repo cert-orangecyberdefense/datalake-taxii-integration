@@ -3,7 +3,7 @@
 # Files resulting from the templates
 .env
 queries.json
-medaillon_config.json
+medallion_config.json
 **/__pycache__
 venv
 .vscode

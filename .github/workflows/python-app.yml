@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Prepare workspace
-        run: cp ./tests/ci_files/.env.test .env && cp ./tests/ci_files/queries.test.json queries.json && cp ./tests/ci_files/medaillon_config.test.json medaillon_config.json
+        run: cp ./tests/ci_files/.env.test .env && cp ./tests/ci_files/queries.test.json queries.json && cp ./tests/ci_files/medallion_config.test.json medallion_config.json
       - name: Build the docker image
         run: docker-compose build taxii_integration
       - name: Run linter and test suite

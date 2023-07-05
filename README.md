@@ -2,7 +2,7 @@
 
  This repository is used to continuously retrieve threats from the Datalake platform and insert them into a taxii server. The user can set a frequency at which the collections of STIX objects will be updated. Upon each update, all previously stored objects are purged from the collections and then replaced by the updated objects, allowing us to provided new information collected on older threats, e.g. updated score or whitelisting.
 
-A reference taxii server, [medaillon](https://github.com/oasis-open/cti-taxii-server/) is used by default.
+A reference taxii server, [medallion](https://github.com/oasis-open/cti-taxii-server/) is used by default.
 
 ## Setting up the images
 
@@ -28,7 +28,7 @@ OCD_DTL_TAXII_PASSWORD=mysupertaxiipassword1
 OCD_DTL_TAXII_VERIFY_SSL=False
 ```
 
-3. Create a file named `medaillon_config.json` and copy the content of `template_medaillon_config.json` into it, then fill the value like the following:
+3. Create a file named `medallion_config.json` and copy the content of `template_medallion_config.json` into it, then fill the value like the following:
 
  ```json
  {
@@ -95,4 +95,50 @@ If you are on an open network, you must secure connections to the taxii server w
 By default, nginx use an auto-signed certificate. Replace it in the [following directory](deployment_sample/certs), as well as change [the nginx config](deployment_sample/nginx_proxy/conf.d/proxy.conf) to not listen to 8080.  
 Remember to adapt your `.env` after that.
 
-:warning: by default medallion use credentials in plain text, therefore medaillon_config.json must be secured.
+:warning: by default medallion use credentials in plain text, therefore medallion_config.json must be secured.
+
+## Testing
+
+Before running tests you will need to change somes values in the `docker-compose.yml` file.
+
+Replace the `taxii_integration` service with the following:
+
+```yml
+  taxii_integration:
+    build: .
+    restart: unless-stopped
+    container_name: taxii_integration
+    volumes:
+      - ./tests/ci_files/queries.test.json:/code/queries.json
+      - data_volume:/code/output
+    env_file: ./tests/ci_files/.env.test
+    depends_on:
+      - nginx_proxy
+    networks:
+      - datalake_taxii_integration
+```
+
+Replace `medallion` service with the following:
+
+```yml
+  medallion:
+    image: ocddev/cti-taxii-server
+    container_name: medallion-deployment-sample
+    restart: unless-stopped
+    command: "uwsgi --ini /deployment_sample/uwsgi.ini"
+    volumes:
+      - ./tests/ci_files/medallion_config.test.json:/opt/taxii/config.json
+      - ./deployment_sample/uwsgi.ini:/deployment_sample/uwsgi.ini
+    depends_on:
+      - mongo
+    networks:
+      - datalake_taxii_integration
+```
+
+This will change which files are used to build those services for our tests.
+
+You can now run the following command:
+
+```shell
+make test
+```
