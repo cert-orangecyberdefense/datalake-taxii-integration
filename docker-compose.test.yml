@@ -1,0 +1,79 @@
+# used for local test
+version: '3'
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - ./deployment_sample/nginx:/etc/nginx
+    depends_on:
+      - medallion
+    networks:
+      - test-datalake-taxii
+
+  nginx_proxy:
+    image: nginx
+    container_name: nginx_proxy
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+      - 443:443
+    volumes:
+      - ./deployment_sample/nginx_proxy:/etc/nginx
+      - ./deployment_sample/certs:/etc/certs # Auto signed certs by default
+    depends_on:
+      - nginx
+    networks:
+      test-datalake-taxii:
+        aliases:
+          - my.taxii_server.com
+
+  taxii_integration:
+    build: .
+    restart: unless-stopped
+    container_name: taxii_integration
+    volumes:
+      - ./tests/ci_files/queries.test.json:/code/queries.json
+      - data_volume:/code/output
+    env_file: ./tests/ci_files/.env.test
+    depends_on:
+      - nginx_proxy
+    networks:
+      - test-datalake-taxii
+
+  medallion:
+    image: ocddev/cti-taxii-server
+    container_name: medallion-deployment-sample
+    restart: unless-stopped
+    command: "uwsgi --ini /deployment_sample/uwsgi.ini"
+    volumes:
+      - ./tests/ci_files/medallion_config.test.json:/opt/taxii/config.json
+      - ./deployment_sample/uwsgi.ini:/deployment_sample/uwsgi.ini
+    depends_on:
+      - mongo
+    networks:
+      - test-datalake-taxii
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./data/mongo_data:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - test-datalake-taxii
+
+volumes:
+  data_volume:
+
+
+networks:
+  test-datalake-taxii:
+    external: true
+    name: test-datalake-taxii

@@ -99,48 +99,12 @@ Remember to adapt your `.env` after that.
 
 :warning: by default medallion use credentials in plain text, therefore medallion_config.json must be secured.
 
-## Testing
+## Running tests
 
-Before running tests you will need to change somes values in the `docker-compose.yml` file.
+To run test, you will need to use the `docker-compose.test.yml` docker-compose file. If you made changes to the tests, make sure any required changes are made there.
 
-Replace the `taxii_integration` service with the following:
+Run the tests with the following command
 
-```yml
-  taxii_integration:
-    build: .
-    restart: unless-stopped
-    container_name: taxii_integration
-    volumes:
-      - ./tests/ci_files/queries.test.json:/code/queries.json
-      - data_volume:/code/output
-    env_file: ./tests/ci_files/.env.test
-    depends_on:
-      - nginx_proxy
-    networks:
-      - datalake_taxii_integration
-```
-
-Replace `medallion` service with the following:
-
-```yml
-  medallion:
-    image: ocddev/cti-taxii-server
-    container_name: medallion-deployment-sample
-    restart: unless-stopped
-    command: "uwsgi --ini /deployment_sample/uwsgi.ini"
-    volumes:
-      - ./tests/ci_files/medallion_config.test.json:/opt/taxii/config.json
-      - ./deployment_sample/uwsgi.ini:/deployment_sample/uwsgi.ini
-    depends_on:
-      - mongo
-    networks:
-      - datalake_taxii_integration
-```
-
-This will change which files are used to build those services for our tests.
-
-You can now run the following command:
-
-```shell
+```bash
 make test
 ```
