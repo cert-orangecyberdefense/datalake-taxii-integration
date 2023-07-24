@@ -1,3 +1,4 @@
+# used for local test
 version: '3'
 services:
   nginx:
@@ -9,7 +10,7 @@ services:
     depends_on:
       - medallion
     networks:
-      - datalake-taxii
+      - test-datalake-taxii
 
   nginx_proxy:
     image: nginx
@@ -24,7 +25,7 @@ services:
     depends_on:
       - nginx
     networks:
-      datalake-taxii:
+      test-datalake-taxii:
         aliases:
           - my.taxii_server.com
 
@@ -33,13 +34,13 @@ services:
     restart: unless-stopped
     container_name: taxii_integration
     volumes:
-      - ./queries.json:/code/queries.json
+      - ./tests/ci_files/queries.test.json:/code/queries.json
       - data_volume:/code/output
-    env_file: .env
+    env_file: ./tests/ci_files/.env.test
     depends_on:
       - nginx_proxy
     networks:
-      - datalake-taxii
+      - test-datalake-taxii
 
   medallion:
     image: ocddev/cti-taxii-server
@@ -47,12 +48,12 @@ services:
     restart: unless-stopped
     command: "uwsgi --ini /deployment_sample/uwsgi.ini"
     volumes:
-      - ./medallion_config.json:/opt/taxii/config.json
+      - ./tests/ci_files/medallion_config.test.json:/opt/taxii/config.json
       - ./deployment_sample/uwsgi.ini:/deployment_sample/uwsgi.ini
     depends_on:
       - mongo
     networks:
-      - datalake-taxii
+      - test-datalake-taxii
 
   mongo:
     image: mongo
@@ -66,13 +67,13 @@ services:
     ports:
       - 27017:27017
     networks:
-      - datalake-taxii
+      - test-datalake-taxii
 
 volumes:
   data_volume:
 
 
 networks:
-  datalake-taxii:
+  test-datalake-taxii:
     external: true
-    name: datalake-taxii
+    name: test-datalake-taxii
