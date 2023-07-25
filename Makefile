@@ -16,4 +16,4 @@ test:
 	&& docker compose -f docker-compose.test.yml restart medallion \
 	&& docker compose -f docker-compose.test.yml run --entrypoint=sh taxii_integration -c \
 	"python -m flake8 . --count --max-complexity=10 --max-line-length=120 --show-source --statistics && python -m pytest -s " \
-	&& docker compose -f docker-compose.test.yml down
+	&& docker compose -f docker-compose.test.yml down && docker network rm test-datalake-taxii
