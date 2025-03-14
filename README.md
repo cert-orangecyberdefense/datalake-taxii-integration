@@ -1,6 +1,6 @@
 # Datalake Taxii Integration
 
- This repository is used to continuously retrieve threats from the Datalake platform and insert them into a taxii server. The user can set a frequency at which the collections of STIX objects will be updated. Upon each update, all previously stored objects are purged from the collections and then replaced by the updated objects, allowing us to provided new information collected on older threats, e.g. updated score or whitelisting.
+ This repository is used to continuously retrieve threats from the Datalake platform and insert them into a taxii server. The user can set a frequency at which the collections of STIX objects will be updated. Upon each update, all previously stored objects are purged from the collections and then replaced by the updated objects, allowing us to provide new information collected on older threats, e.g. updated score or whitelisting.
 
 A reference taxii server, [medallion](https://github.com/oasis-open/cti-taxii-server/) is used by default.
 
@@ -20,6 +20,7 @@ PYTHONUNBUFFERED=1
 OCD_DTL_API_ENV=prod
 OCD_DTL_USERNAME=user@mail.com
 OCD_DTL_PASSWORD=mysupersecretpassword1
+OCD_DTL_LONGTERM_TOKEN=mylongtermtoken
 OCD_DTL_API_LOG_LVL=20
 OCD_DTL_TAXII_HOST=http://my.taxii_server.com:8080
 OCD_DTL_TAXII_MONGO_URL=mongodb://root-username-in-docker-compose:password-in-docker-compose@mongo:27017/
@@ -28,7 +29,7 @@ OCD_DTL_TAXII_PASSWORD=mysupertaxiipassword1
 OCD_DTL_TAXII_VERIFY_SSL=False
 ```
 
-Make sure to replace the values.
+Make sure to replace the values. You may use either `OCD_DTL_LONGTERM_TOKEN` on its own, or both `OCD_DTL_USERNAME` and `OCD_DTL_USERNAME` to allow access to Datalake.
 
 3. Create a file named `medallion_config.json` and copy the content of `template_medallion_config.json` into it, then fill the value like the following:
 
@@ -47,7 +48,7 @@ Make sure to replace the values.
   }
  ```
 
-:warning: Values must be synced with the content of `docker-compose.yml` and `.env`.In particular username and password of mongo, as well as `TAXII_USER` and `TAXII_PASSWORD`.
+:warning: Values must be synced with the content of `docker-compose.yml` and `.env`. In particular username and password of mongo, as well as `TAXII_USER` and `TAXII_PASSWORD`.
 
 4. Create a file named `queries.json` and copy the content of `template_queries.json` into it, then fill the value like the following:
 

@@ -1,7 +1,7 @@
 build:
 	docker compose build
 
-init:
+init: build
 	docker network create datalake-taxii || echo "Using previously created network datalake-taxii..." \
 	&& docker compose run --rm --entrypoint "python main.py --init" taxii_integration \
 	&& docker compose restart medallion
