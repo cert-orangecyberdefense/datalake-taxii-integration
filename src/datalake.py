@@ -6,8 +6,7 @@ import time
 import shutil
 from dataclasses import dataclass
 
-from datalake import Datalake as dtl
-from datalake.common.ouput import Output
+from datalake import Output, Datalake as dtl
 from src.logger import logger
 
 
